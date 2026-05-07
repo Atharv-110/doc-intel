@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -68,14 +69,14 @@ export function DocumentsPanel({
       {/* Footer */}
       <div className="mt-auto shrink-0 border-t border-border px-4 py-3 text-center text-[0.65rem] text-muted-foreground">
         © 2026 Atharv Vani.{" "}
-        <a
+        <Link
           href="https://github.com/atharvvani"
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary hover:underline"
         >
           GitHub
-        </a>
+        </Link>
       </div>
     </motion.aside>
   );

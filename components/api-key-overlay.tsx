@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect } from "react"
+import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -148,14 +149,14 @@ export function ApiKeyOverlay({ onSubmit, error }: ApiKeyOverlayProps) {
               </div>
               <p className="mt-2 text-center text-xs text-muted-foreground">
                 Need a key? Generate one for the PageIndex SDK at{" "}
-                <a
+                <Link
                   href="https://dash.pageindex.ai/api-keys"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary underline-offset-4 hover:underline"
                 >
                   dash.pageindex.ai/api-keys
-                </a>
+                </Link>
               </p>
 
               {error ? (
@@ -165,6 +166,17 @@ export function ApiKeyOverlay({ onSubmit, error }: ApiKeyOverlayProps) {
               ) : null}
             </div>
           </BlurFade>
+        </div>
+        <div className="absolute bottom-4 left-0 right-0 z-10 text-center text-[0.65rem] text-muted-foreground">
+          © 2026 Atharv Vani.{" "}
+          <Link
+            href="https://github.com/atharvvani"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            GitHub
+          </Link>
         </div>
       </motion.div>
     </AnimatePresence>

@@ -22,13 +22,15 @@ interface CenterPanelProps {
   isStreaming: boolean;
   hasSelectedDoc: boolean;
   onSendMessage: (content: string) => void;
+  chatInputValue: string;
+  setChatInputValue: (val: string) => void;
 }
 
 export function CenterPanel(props: CenterPanelProps) {
   const {
     activeTab, onTabChange, treeData, treeLoading, treeError,
     treeProcessing, treeStats, docName, chatMessages, isStreaming,
-    hasSelectedDoc, onSendMessage,
+    hasSelectedDoc, onSendMessage, chatInputValue, setChatInputValue
   } = props;
 
   return (
@@ -77,6 +79,8 @@ export function CenterPanel(props: CenterPanelProps) {
             isStreaming={isStreaming}
             hasSelectedDoc={hasSelectedDoc}
             onSendMessage={onSendMessage}
+            inputValue={chatInputValue}
+            onInputChange={setChatInputValue}
           />
         </TabsContent>
       </Tabs>

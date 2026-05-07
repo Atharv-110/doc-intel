@@ -7,7 +7,7 @@ import type { ChatMessage } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { AnimatePresence, motion } from "framer-motion"
 import { Send } from "lucide-react"
-import { memo, useCallback, useEffect, useRef, useState } from "react"
+import { memo, useCallback, useEffect, useRef } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
@@ -107,6 +107,8 @@ interface ChatViewProps {
   isStreaming: boolean
   hasSelectedDoc: boolean
   onSendMessage: (content: string) => void
+  inputValue: string
+  onInputChange: (val: string) => void
 }
 
 export function ChatView({
@@ -114,8 +116,9 @@ export function ChatView({
   isStreaming,
   hasSelectedDoc,
   onSendMessage,
+  inputValue,
+  onInputChange,
 }: ChatViewProps) {
-  const [inputValue, setInputValue] = useState("")
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -129,7 +132,7 @@ export function ChatView({
   const handleSend = useCallback(() => {
     if (!inputValue.trim() || isStreaming) return
     onSendMessage(inputValue.trim())
-    setInputValue("")
+    // Note: useChat's sendMessage handles clearing the draft text when appropriate.
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto"
     }
@@ -197,7 +200,7 @@ export function ChatView({
         {hasSelectedDoc ? (
           <ChatInput
             value={inputValue}
-            onChange={setInputValue}
+            onChange={onInputChange}
             onSend={handleSend}
             onKeyDown={handleKeyDown}
             isStreaming={isStreaming}
@@ -229,7 +232,7 @@ export function ChatView({
       {/* Input */}
       <ChatInput
         value={inputValue}
-        onChange={setInputValue}
+        onChange={onInputChange}
         onSend={handleSend}
         onKeyDown={handleKeyDown}
         isStreaming={isStreaming}
@@ -270,13 +273,13 @@ function ChatInput({
           }}
           onKeyDown={onKeyDown}
           placeholder="Ask a question about this document…"
-          className="max-h-[120px] min-h-[24px] flex-1 resize-none border-0 bg-transparent p-1 text-sm shadow-none focus-visible:ring-0"
+          className="max-h-[120px] min-h-[24px] flex-1 resize-none border-0 bg-transparent p-1 text-sm shadow-none focus-visible:ring-0 dark:bg-transparent"
           rows={1}
           id="chat-input"
         />
         <Button
           size="icon"
-          className="size-8 shrink-0 rounded-lg"
+          className="flex size-8 shrink-0 items-center justify-center rounded-lg"
           onClick={onSend}
           disabled={!value.trim() || isStreaming}
           id="chat-send"

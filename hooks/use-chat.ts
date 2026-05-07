@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import type {
   ChatMessage,
   ChatStreamChunk,
@@ -27,6 +27,44 @@ export function useChat(docId: string | null, docName: string | null) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [retrievalLog, setRetrievalLog] = useState<RetrievalLogEntry[]>([]);
   const abortRef = useRef<AbortController | null>(null);
+
+  // New states for input persistence
+  const [draftMessages, setDraftMessages] = useState<Record<string, string>>({});
+
+  // Load chat history from local storage when docId changes
+  useEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      if (!docId) {
+        setMessages([]);
+        setRetrievalLog([]);
+        return;
+      }
+      const saved = localStorage.getItem(`chat_history_${docId}`);
+      if (saved) {
+        try {
+          setMessages(JSON.parse(saved));
+        } catch {
+          setMessages([]);
+        }
+      } else {
+        setMessages([]);
+      }
+      setRetrievalLog([]); // Reset log for a new doc
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, [docId]);
+
+  // Save chat history to local storage whenever messages change
+  useEffect(() => {
+    if (!docId || messages.length === 0) return;
+    localStorage.setItem(`chat_history_${docId}`, JSON.stringify(messages));
+  }, [messages, docId]);
+
+  const currentDraft = docId ? (draftMessages[docId] ?? "") : "";
+  const setDraft = useCallback((text: string) => {
+    if (!docId) return;
+    setDraftMessages((prev) => ({ ...prev, [docId]: text }));
+  }, [docId]);
 
   const addLogEntry = useCallback(
     (variant: RetrievalLogEntry["variant"], text: string, isActive = false) => {
@@ -56,6 +94,9 @@ export function useChat(docId: string | null, docName: string | null) {
       const userMessage: ChatMessage = { role: "user", content };
       const currentMessages = [...messages, userMessage];
       setMessages(currentMessages);
+
+      // Clear draft message
+      setDraftMessages((prev) => ({ ...prev, [docId]: "" }));
 
       // Clear retrieval log for new query
       setRetrievalLog([
@@ -188,7 +229,16 @@ export function useChat(docId: string | null, docName: string | null) {
     setMessages([]);
     setRetrievalLog([]);
     setIsStreaming(false);
+    // Note: Do not clear draft here to preserve typed text when re-selecting the same document.
   }, []);
 
-  return { messages, isStreaming, retrievalLog, sendMessage, resetChat };
+  return { 
+    messages, 
+    isStreaming, 
+    retrievalLog, 
+    sendMessage, 
+    resetChat,
+    inputValue: currentDraft,
+    setInputValue: setDraft
+  };
 }

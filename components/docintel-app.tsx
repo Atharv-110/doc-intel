@@ -40,6 +40,8 @@ export function DocIntelApp() {
     retrievalLog,
     sendMessage,
     resetChat,
+    inputValue: chatInputValue,
+    setInputValue: setChatInputValue,
   } = useChat(selectedDoc?.id ?? null, selectedDoc?.name ?? null)
 
   const [activeTab, setActiveTab] = useState("tree")
@@ -113,6 +115,8 @@ export function DocIntelApp() {
             isStreaming={isStreaming}
             hasSelectedDoc={!!selectedDoc}
             onSendMessage={handleSendMessage}
+            chatInputValue={chatInputValue}
+            setChatInputValue={setChatInputValue}
           />
 
           <InsightsPanel retrievalLog={retrievalLog} />

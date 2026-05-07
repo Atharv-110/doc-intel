@@ -1,4 +1,18 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  // -------------------------------------------------------------------
+  // Server configuration
+  // -------------------------------------------------------------------
+  serverExternalPackages: ["@pageindex/sdk"],
 
-export default nextConfig
+  // -------------------------------------------------------------------
+  // API body size limit — allows 50 MB PDF uploads via /api/upload
+  // -------------------------------------------------------------------
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "50mb",
+    },
+  },
+};
+
+export default nextConfig;

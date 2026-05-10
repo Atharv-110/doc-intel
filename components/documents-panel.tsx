@@ -1,23 +1,27 @@
-"use client";
+"use client"
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { RefreshCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { UploadZone } from "@/components/upload-zone";
-import { DocumentList } from "@/components/document-list";
-import { slideInLeft } from "@/lib/transitions";
-import type { Document } from "@/lib/types";
+import { motion } from "framer-motion"
+import Link from "next/link"
+import { RefreshCw } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { UploadZone } from "@/components/upload-zone"
+import { DocumentList } from "@/components/document-list"
+import { slideInLeft } from "@/lib/transitions"
+import type { Document } from "@/lib/types"
 
 interface DocumentsPanelProps {
-  documents: Document[];
-  selectedDocId: string | null;
-  onSelect: (doc: Document) => void;
-  onDelete: (docId: string) => void;
-  onRefresh: () => void;
-  onUploadComplete: () => void;
+  documents: Document[]
+  selectedDocId: string | null
+  onSelect: (doc: Document) => void
+  onDelete: (docId: string) => void
+  onRefresh: () => void
+  onUploadComplete: () => void
 }
 
 export function DocumentsPanel({
@@ -37,13 +41,18 @@ export function DocumentsPanel({
       id="documents-panel"
     >
       {/* Header */}
-      <div className="flex shrink-0 items-center justify-between px-4 py-3 border-b border-border">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+      <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3">
+        <h2 className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
           Documents
         </h2>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-7" onClick={onRefresh}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-7"
+              onClick={onRefresh}
+            >
               <RefreshCw />
             </Button>
           </TooltipTrigger>
@@ -70,7 +79,7 @@ export function DocumentsPanel({
       <div className="mt-auto shrink-0 border-t border-border px-4 py-3 text-center text-[0.65rem] text-muted-foreground">
         © 2026 Atharv Vani.{" "}
         <Link
-          href="https://github.com/atharvvani"
+          href="https://github.com/atharv-110"
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary hover:underline"
@@ -79,5 +88,5 @@ export function DocumentsPanel({
         </Link>
       </div>
     </motion.aside>
-  );
+  )
 }

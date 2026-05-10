@@ -62,7 +62,7 @@ const DocumentItem = memo(function DocumentItem({
     <motion.div
       variants={staggerItem}
       className={cn(
-        "group relative flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5 transition-colors",
+        "group relative flex cursor-pointer items-start gap-3 px-3 py-2.5 transition-colors",
         isSelected
           ? "bg-primary/10 ring-1 ring-primary/20"
           : "hover:bg-muted/50",
@@ -74,7 +74,7 @@ const DocumentItem = memo(function DocumentItem({
       {/* Icon */}
       <div
         className={cn(
-          "flex size-8 shrink-0 items-center justify-center rounded-md",
+          "flex size-8 shrink-0 items-center justify-center",
           isSelected
             ? "bg-primary/20 text-primary"
             : "bg-muted text-muted-foreground"

@@ -7,19 +7,17 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { fadeIn } from "@/lib/transitions"
 import { Zap } from "lucide-react"
 
-interface AppHeaderProps {
+interface CommonHeaderProps {
   showThemeToggle?: boolean
-  showConnectButton?: boolean
-  onConnect?: () => void
   isConnected?: boolean
+  connectAction?: () => void
 }
 
-export function AppHeader({
+export function CommonHeader({
   showThemeToggle = true,
-  showConnectButton = false,
-  onConnect,
-  isConnected = false,
-}: AppHeaderProps) {
+  isConnected,
+  connectAction,
+}: CommonHeaderProps) {
   return (
     <motion.header
       variants={fadeIn}
@@ -43,8 +41,8 @@ export function AppHeader({
       </div>
 
       <div className="flex items-center gap-2.5">
-        {showConnectButton && onConnect && (
-          <Button variant="outline" size="sm" onClick={onConnect}>
+        {connectAction && (
+          <Button variant="outline" size="sm" onClick={connectAction}>
             Enter API Key
           </Button>
         )}

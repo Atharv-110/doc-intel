@@ -1,18 +1,18 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { AppHeader } from "@/components/app-header"
+import { CenterPanel } from "@/components/center-panel"
+import { DocumentsPanel } from "@/components/documents-panel"
+import { InsightsPanel } from "@/components/insights-panel"
+import { LandingScreen } from "@/components/landing-screen"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useApiKey } from "@/hooks/use-api-key"
+import { useChat } from "@/hooks/use-chat"
 import { useDocuments } from "@/hooks/use-documents"
 import { useTree } from "@/hooks/use-tree"
-import { useChat } from "@/hooks/use-chat"
-import { ApiKeyOverlay } from "@/components/api-key-overlay"
-import { AppHeader } from "@/components/app-header"
-import { DocumentsPanel } from "@/components/documents-panel"
-import { CenterPanel } from "@/components/center-panel"
-import { InsightsPanel } from "@/components/insights-panel"
-import { Skeleton } from "@/components/ui/skeleton"
 import { fadeIn } from "@/lib/transitions"
+import { motion } from "framer-motion"
+import { useCallback, useState } from "react"
 
 export function DocIntelApp() {
   const {
@@ -63,6 +63,17 @@ export function DocIntelApp() {
     [sendMessage]
   )
 
+  const handleApiSubmit = useCallback(
+    async (key: string) => {
+      await configure(key)
+    },
+    [configure]
+  )
+
+  const handleResetApiKey = useCallback(() => {
+    reset()
+  }, [reset])
+
   // Loading splash
   if (authLoading) {
     return (
@@ -75,53 +86,60 @@ export function DocIntelApp() {
     )
   }
 
-  // API key overlay
+  // Show landing screen when not configured
   if (!isConfigured) {
-    return <ApiKeyOverlay onSubmit={configure} error={authError} />
-  }
-
-  // Main app
-  return (
-    <AnimatePresence mode="wait">
+    return (
       <motion.div
-        key="app"
+        key="landing"
         variants={fadeIn}
         initial="hidden"
         animate="visible"
         className="flex h-svh flex-col"
       >
-        <AppHeader />
-
-        <main className="flex min-h-0 flex-1 overflow-hidden">
-          <DocumentsPanel
-            documents={documents}
-            selectedDocId={selectedDoc?.id ?? null}
-            onSelect={handleSelectDoc}
-            onDelete={deleteDocument}
-            onRefresh={refresh}
-            onUploadComplete={refresh}
-          />
-
-          <CenterPanel
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            treeData={treeData}
-            treeLoading={treeLoading}
-            treeError={treeError}
-            treeProcessing={treeProcessing}
-            treeStats={treeStats}
-            docName={selectedDoc?.name ?? null}
-            chatMessages={chatMessages}
-            isStreaming={isStreaming}
-            hasSelectedDoc={!!selectedDoc}
-            onSendMessage={handleSendMessage}
-            chatInputValue={chatInputValue}
-            setChatInputValue={setChatInputValue}
-          />
-
-          <InsightsPanel retrievalLog={retrievalLog} />
-        </main>
+        <LandingScreen onConnect={handleApiSubmit} error={authError} />
       </motion.div>
-    </AnimatePresence>
+    )
+  }
+
+  // Main app with common header
+  return (
+    <motion.div
+      key="app"
+      variants={fadeIn}
+      initial="hidden"
+      animate="visible"
+      className="flex h-svh flex-col"
+    >
+      <AppHeader showThemeToggle isConnected />
+      <main className="flex min-h-0 flex-1 overflow-hidden">
+        <DocumentsPanel
+          documents={documents}
+          selectedDocId={selectedDoc?.id ?? null}
+          onSelect={handleSelectDoc}
+          onDelete={deleteDocument}
+          onRefresh={refresh}
+          onUploadComplete={refresh}
+        />
+
+        <CenterPanel
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          treeData={treeData}
+          treeLoading={treeLoading}
+          treeError={treeError}
+          treeProcessing={treeProcessing}
+          treeStats={treeStats}
+          docName={selectedDoc?.name ?? null}
+          chatMessages={chatMessages}
+          isStreaming={isStreaming}
+          hasSelectedDoc={!!selectedDoc}
+          onSendMessage={handleSendMessage}
+          chatInputValue={chatInputValue}
+          setChatInputValue={setChatInputValue}
+        />
+
+        <InsightsPanel retrievalLog={retrievalLog} />
+      </main>
+    </motion.div>
   )
 }

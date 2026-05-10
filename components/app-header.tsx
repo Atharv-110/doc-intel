@@ -1,8 +1,9 @@
-"use client";
+"use client"
 
-import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
-import { fadeIn } from "@/lib/transitions";
+import { motion } from "framer-motion"
+import { Badge } from "@/components/ui/badge"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { fadeIn } from "@/lib/transitions"
 
 export function AppHeader() {
   return (
@@ -15,11 +16,7 @@ export function AppHeader() {
       <div className="flex items-center gap-3">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <svg
-            viewBox="0 0 32 32"
-            fill="none"
-            className="size-7 text-primary"
-          >
+          <svg viewBox="0 0 32 32" fill="none" className="size-7 text-primary">
             <rect
               x="2"
               y="2"
@@ -44,12 +41,16 @@ export function AppHeader() {
           <span className="text-base font-bold tracking-tight">DocIntel</span>
         </div>
 
-        <Badge variant="secondary" className="text-[0.65rem] uppercase tracking-wider">
+        <Badge
+          variant="secondary"
+          className="text-[0.65rem] tracking-wider uppercase"
+        >
           Vectorless RAG
         </Badge>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2.5">
+        <ThemeToggle />
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <span className="relative flex size-2">
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-400 opacity-75" />
@@ -59,5 +60,5 @@ export function AppHeader() {
         </div>
       </div>
     </motion.header>
-  );
+  )
 }

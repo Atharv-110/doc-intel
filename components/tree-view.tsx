@@ -1,19 +1,17 @@
-"use client";
+"use client"
 
-import { useState, useCallback, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, TreePine } from "lucide-react";
+import { Badge } from "@/components/ui/badge"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
-import { treeChildrenVariant, staggerContainer, staggerItem } from "@/lib/transitions";
-import type { TreeNode as TreeNodeType, TreeStats } from "@/lib/types";
+  staggerContainer,
+  staggerItem,
+  treeChildrenVariant,
+} from "@/lib/transitions"
+import type { TreeNode as TreeNodeType, TreeStats } from "@/lib/types"
+import { cn } from "@/lib/utils"
+import { AnimatePresence, motion } from "framer-motion"
+import { ChevronRight, TreePine } from "lucide-react"
+import { memo, useCallback, useState } from "react"
 
 // Depth-based color classes using semantic tokens + subtle accent hues
 const DEPTH_COLORS = [
@@ -22,7 +20,7 @@ const DEPTH_COLORS = [
   "bg-violet-500",
   "bg-amber-500",
   "bg-teal-500",
-] as const;
+] as const
 
 // --- TreeNode component ---
 
@@ -31,35 +29,35 @@ const TreeNodeItem = memo(function TreeNodeItem({
   depth,
   isRoot,
 }: {
-  node: TreeNodeType;
-  depth: number;
-  isRoot: boolean;
+  node: TreeNodeType
+  depth: number
+  isRoot: boolean
 }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [showText, setShowText] = useState(false);
-  const hasChildren = Boolean(node.nodes && node.nodes.length > 0);
-  const depthColor = DEPTH_COLORS[Math.min(depth, DEPTH_COLORS.length - 1)];
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [showText, setShowText] = useState(false)
+  const hasChildren = Boolean(node.nodes && node.nodes.length > 0)
+  const depthColor = DEPTH_COLORS[Math.min(depth, DEPTH_COLORS.length - 1)]
 
   const handleToggle = useCallback(() => {
     if (hasChildren) {
-      setIsExpanded((prev) => !prev);
+      setIsExpanded((prev) => !prev)
     }
     if (node.text) {
-      setShowText((prev) => !prev);
+      setShowText((prev) => !prev)
     }
-  }, [hasChildren, node.text]);
+  }, [hasChildren, node.text])
 
   return (
     <div className={cn("relative", !isRoot && "ml-5")}>
       {/* Connector line for child nodes */}
       {!isRoot ? (
-        <div className="absolute -left-4 top-3.5 h-px w-3 bg-border" />
+        <div className="absolute top-3.5 -left-4 h-px w-3 bg-border" />
       ) : null}
 
       {/* Node row */}
       <motion.div
         className={cn(
-          "group flex cursor-pointer select-none items-center gap-1 rounded-md px-2 py-1.5 transition-colors hover:bg-muted/80",
+          "group flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 transition-colors select-none hover:bg-muted/80"
         )}
         onClick={handleToggle}
         whileTap={{ scale: 0.99 }}
@@ -70,22 +68,20 @@ const TreeNodeItem = memo(function TreeNodeItem({
           transition={{ duration: 0.2, ease: "easeOut" }}
           className={cn(
             "flex size-5 shrink-0 items-center justify-center text-muted-foreground",
-            !hasChildren && "invisible",
+            !hasChildren && "invisible"
           )}
         >
           <ChevronRight className="size-3.5" />
         </motion.div>
 
         {/* Depth dot */}
-        <div
-          className={cn("size-2 shrink-0 rounded-sm", depthColor)}
-        />
+        <div className={cn("size-2 shrink-0 rounded-sm", depthColor)} />
 
         {/* Label */}
         <span
           className={cn(
             "min-w-0 flex-1 truncate text-sm",
-            isRoot ? "font-bold" : "font-medium",
+            isRoot ? "font-bold" : "font-medium"
           )}
         >
           {node.title ?? "Untitled"}
@@ -119,7 +115,7 @@ const TreeNodeItem = memo(function TreeNodeItem({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <p className="py-1 pl-8 pr-2 text-xs leading-relaxed text-muted-foreground">
+            <p className="py-1 pr-2 pl-8 text-xs leading-relaxed text-muted-foreground">
               {node.text.length > 300
                 ? node.text.substring(0, 300) + "…"
                 : node.text}
@@ -150,18 +146,18 @@ const TreeNodeItem = memo(function TreeNodeItem({
         ) : null}
       </AnimatePresence>
     </div>
-  );
-});
+  )
+})
 
 // --- Main TreeView ---
 
 interface TreeViewProps {
-  treeData: TreeNodeType[] | null;
-  isLoading: boolean;
-  error: string | null;
-  isProcessing: boolean;
-  stats: TreeStats | null;
-  docName: string | null;
+  treeData: TreeNodeType[] | null
+  isLoading: boolean
+  error: string | null
+  isProcessing: boolean
+  stats: TreeStats | null
+  docName: string | null
 }
 
 export function TreeView({
@@ -177,11 +173,9 @@ export function TreeView({
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <div className="size-7 animate-spin rounded-full border-2 border-border border-t-primary" />
-        <p className="text-sm text-muted-foreground">
-          Building document tree…
-        </p>
+        <p className="text-sm text-muted-foreground">Building document tree…</p>
       </div>
-    );
+    )
   }
 
   // Error state
@@ -192,7 +186,7 @@ export function TreeView({
         <h3 className="text-base font-semibold">Failed to Load Tree</h3>
         <p className="max-w-sm text-sm text-muted-foreground">{error}</p>
       </div>
-    );
+    )
   }
 
   // Processing state
@@ -206,7 +200,7 @@ export function TreeView({
           ready.
         </p>
       </div>
-    );
+    )
   }
 
   // Empty state
@@ -266,11 +260,12 @@ export function TreeView({
         <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
           Select a processed document to explore its hierarchical structure.
           <br />
-          This is the <strong className="text-foreground">vectorless index</strong>{" "}
-          that PageIndex builds — no embeddings required.
+          This is the{" "}
+          <strong className="text-foreground">vectorless index</strong> that
+          PageIndex builds — no embeddings required.
         </p>
       </div>
-    );
+    )
   }
 
   // Tree view
@@ -284,7 +279,7 @@ export function TreeView({
               📄
             </div>
             <div className="min-w-0 flex-1">
-              <CardTitle className="text-sm truncate">
+              <CardTitle className="truncate text-sm">
                 {docName ?? "Document"}
               </CardTitle>
               <p className="text-xs text-muted-foreground">
@@ -295,19 +290,19 @@ export function TreeView({
               <div className="flex gap-5">
                 <div className="text-center">
                   <div className="text-lg font-bold">{stats.totalNodes}</div>
-                  <div className="text-[0.6rem] uppercase tracking-wider text-muted-foreground">
+                  <div className="text-[0.6rem] tracking-wider text-muted-foreground uppercase">
                     Nodes
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold">{stats.maxDepth}</div>
-                  <div className="text-[0.6rem] uppercase tracking-wider text-muted-foreground">
+                  <div className="text-[0.6rem] tracking-wider text-muted-foreground uppercase">
                     Depth
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-lg font-bold">{stats.rootSections}</div>
-                  <div className="text-[0.6rem] uppercase tracking-wider text-muted-foreground">
+                  <div className="text-[0.6rem] tracking-wider text-muted-foreground uppercase">
                     Sections
                   </div>
                 </div>
@@ -331,5 +326,5 @@ export function TreeView({
         </motion.div>
       </div>
     </div>
-  );
+  )
 }

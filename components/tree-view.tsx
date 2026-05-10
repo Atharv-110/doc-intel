@@ -16,10 +16,10 @@ import { memo, useCallback, useState } from "react"
 // Depth-based color classes using semantic tokens + subtle accent hues
 const DEPTH_COLORS = [
   "bg-primary",
-  "bg-emerald-500",
-  "bg-violet-500",
-  "bg-amber-500",
-  "bg-teal-500",
+  "bg-emerald-400",
+  "bg-violet-400",
+  "bg-amber-400",
+  "bg-teal-400",
 ] as const
 
 // --- TreeNode component ---
@@ -57,7 +57,7 @@ const TreeNodeItem = memo(function TreeNodeItem({
       {/* Node row */}
       <motion.div
         className={cn(
-          "group flex cursor-pointer items-center gap-1 rounded-md px-2 py-1.5 transition-colors select-none hover:bg-muted/80"
+          "group flex cursor-pointer items-center gap-1 rounded-none px-2 py-1.5 transition-colors select-none hover:bg-muted/80"
         )}
         onClick={handleToggle}
         whileTap={{ scale: 0.99 }}
@@ -275,7 +275,7 @@ export function TreeView({
         {/* Document header card */}
         <Card className="mb-5">
           <CardHeader className="flex-row items-center gap-3 py-3">
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary text-lg text-primary-foreground">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-none bg-primary text-lg text-primary-foreground">
               📄
             </div>
             <div className="min-w-0 flex-1">

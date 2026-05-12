@@ -86,35 +86,37 @@ export function LandingScreen({ onConnect, error }: LandingScreenProps) {
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      className="relative flex min-h-svh flex-col bg-background"
+      className="relative flex min-h-svh flex-col overflow-auto bg-background"
     >
       <CommonHeader showThemeToggle />
 
-      <main className="flex flex-1 flex-col items-center justify-center px-4 pb-8">
-        <div className="w-full max-w-5xl">
+      <main className="flex flex-1 flex-col items-center justify-center px-4 py-8 md:py-12">
+        <div className="flex w-full max-w-5xl flex-col gap-8 md:gap-12">
           {/* Hero Section */}
-          <motion.div variants={fadeInUp} className="text-center">
-            <div className="mx-auto mb-2 flex size-20 items-center justify-center rounded-none">
+          <motion.div variants={fadeInUp} className="flex flex-col items-center text-center gap-4 md:gap-6">
+            <div className="flex size-20 items-center justify-center rounded-none">
               <Zap className="size-16 text-primary drop-shadow-xs drop-shadow-amber-100" />
             </div>
-            <div className="mx-auto max-w-3xl">
-              <SparklesText className="text-6xl font-medium tracking-tight sm:text-8xl">
+            <div className="max-w-3xl">
+              <SparklesText className="text-5xl font-medium tracking-tight sm:text-7xl md:text-8xl">
                 DocIntel
               </SparklesText>
             </div>
-            <div className="mx-auto mt-6 text-center text-lg text-muted-foreground sm:max-w-2xl sm:text-xl">
-              <TextAnimate
-                by="word"
-                animation="fadeIn"
-                duration={0.5}
-                className="w-full"
-              >
-                Enterprise Document Intelligence Platform powered by Vectorless
-                RAG.
-              </TextAnimate>
-            </div>
-            <div className="mt-4 text-base text-muted-foreground">
-              Intelligent tree-structured navigation without embeddings.
+            <div className="flex flex-col items-center gap-2">
+              <div className="max-w-2xl text-center text-lg text-muted-foreground sm:text-xl">
+                <TextAnimate
+                  by="word"
+                  animation="fadeIn"
+                  duration={0.5}
+                  className="w-full"
+                >
+                  Enterprise Document Intelligence Platform powered by Vectorless
+                  RAG.
+                </TextAnimate>
+              </div>
+              <div className="text-base text-muted-foreground">
+                Intelligent tree-structured navigation without embeddings.
+              </div>
             </div>
           </motion.div>
 
@@ -148,7 +150,7 @@ export function LandingScreen({ onConnect, error }: LandingScreenProps) {
           <motion.div
             variants={fadeInUp}
             transition={{ delay: 0.3 }}
-            className="mt-4 overflow-hidden"
+            className="flex flex-col gap-4 overflow-hidden"
           >
             <Marquee className="opacity-50">{marqueeContent}</Marquee>
             <Marquee reverse className="opacity-50">
@@ -160,7 +162,7 @@ export function LandingScreen({ onConnect, error }: LandingScreenProps) {
           <motion.div
             variants={slideInRight}
             transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 w-full max-w-md"
+            className="mx-auto w-full max-w-md"
           >
             <div className="rounded-none border border-border bg-card p-8 shadow-xl shadow-muted-foreground/5">
               <h3 className="text-center text-base font-semibold text-foreground">
@@ -170,7 +172,7 @@ export function LandingScreen({ onConnect, error }: LandingScreenProps) {
                 onSubmit={handleSubmit}
                 className="mt-6 flex flex-col gap-4"
               >
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   <Input
                     type="password"
                     placeholder="pi-xxxxxxxxxxxxxxxx"
@@ -225,20 +227,20 @@ export function LandingScreen({ onConnect, error }: LandingScreenProps) {
               Trusted by developers and enterprises
             </p>
           </motion.div> */}
-
-          <div className="fixed bottom-2 left-1/2 w-full -translate-x-1/2 border-t border-border px-4 py-3 text-center text-[0.65rem] text-muted-foreground">
-            © 2026 Atharv Vani.{" "}
-            <Link
-              href="https://github.com/atharv-110"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              GitHub
-            </Link>
-          </div>
         </div>
       </main>
+
+      <footer className="w-full border-t border-border px-4 py-6 text-center text-sm text-muted-foreground">
+        © 2026 Atharv Vani.{" "}
+        <Link
+          href="https://github.com/atharv-110"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary hover:underline"
+        >
+          GitHub
+        </Link>
+      </footer>
     </motion.div>
   )
 }
